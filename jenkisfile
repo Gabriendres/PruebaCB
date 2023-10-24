@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar Repositorio') {
+            steps {
+                
+                checkout scm
+            }
+        }
+
+        stage('Ejecutar Pruebas Unitarias') {
+            steps {
+                
+                sh 'python -m pytest tests/'  // Ejemplo para PyTest
+            }
+        }
+
+        stage('Análisis de Calidad de Código') {
+            steps {
+                // Analiza la calidad del código con SonarQube o SonarCloud
+                // Asegúrate de configurar SonarQube o SonarCloud en tu entorno
+                // y ejecuta el análisis aquí
+            }
+        }
+
+        stage('Construir y Subir la Imagen de Docker') {
+            steps {
+               
+                sh 'docker build -t mi-aplicacion-web .'
+               
+                sh 'docker push usuario/mi-aplicacion-web:latest'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Puedes agregar pasos adicionales aquí, como notificaciones o limpieza
+        }
+    }
+}
